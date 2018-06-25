@@ -1,6 +1,6 @@
 # hangman
 Hackathon June 2018
-/****************************************************************************************
+
 	Giselle Northy - OSU Post-Bacc CS Student
 	Oregon State Beaverhacks Summer 2018
 	Single Player Hangman Version 1.0
@@ -21,4 +21,4 @@ Hackathon June 2018
 	E. Input validation only letters through the alphabet https://stackoverflow.com/questions/7616867/how-to-test-a-string-for-letters-only
 	F. Check to see if this letter has already been guessed or not http://www.cplusplus.com/reference/string/string/find/
 	G. English word list https://github.com/dwyl/english-words/blob/master/words_alpha.zip
-****************************************************************************************/
+
