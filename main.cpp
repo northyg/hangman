@@ -1,48 +1,55 @@
-/*************************************************************
-Giselle Northy
-Oregon State Beaverhacks Summer 2018
-Single Player Hangman
+/****************************************************************************************
+	Giselle Northy - OSU Post-Bacc CS Student
+	Oregon State Beaverhacks Summer 2018
+	Single Player Hangman Version 1.0
 
-References:
+	My single player hangman randomly pickes a word or phrase from a game uses a txt library
+	that the player needs to guess in order to win!
 
-http://rogerdudler.github.io/git-guide/
+	Words can be added to library.txt so long as white spaces are not left on accident.
 
+	Correct guesses don't count against total guesses. 
 
-*************************************************************/
+	Resources:
 
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <iterator>
-#include <cstdlib> // for random
-#include <time.h> // initalize random
-#include <vector>
+	A. Git guide http://rogerdudler.github.io/git-guide/
+	B. Counting lines in a txt file https://stackoverflow.com/questions/3482064/counting-the-number-of-lines-in-a-text-file
+	C. Randomizing http://www.cplusplus.com/reference/cstdlib/rand/
+	D. Convert strings to upper or lower case https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
+	E. Input validation only letters through the alphabet https://stackoverflow.com/questions/7616867/how-to-test-a-string-for-letters-only
+	F. Check to see if this letter has already been guessed or not http://www.cplusplus.com/reference/string/string/find/
+	G. English word list https://github.com/dwyl/english-words/blob/master/words_alpha.zip
+****************************************************************************************/
 
-#define NUM_GUESSES (1)
+	#include <iostream>
+	#include <fstream>
+	#include <algorithm>
+	#include <iterator>
+	#include <cstdlib> // for random
+	#include <time.h> // initalize random
+
+	// # of letter guesses allowed before losing
+	#define NUM_GUESSES (10)
 
 
 /****************************************************************************************
-
-
+	Call menu function 1.
 ****************************************************************************************/
 using namespace std;
 
 
-int menu (string menuQuestion, int MIN, int MAX); // menu function 
+int menu (string menuQuestion, int MIN, int MAX); 
 
 int main()
 {
 	
-	// declare variables and functions
+	// declare variables
 	string guesses = "";
 	string answerString;
 	string displayWord;
-
 	int guessesLeft = NUM_GUESSES;
 
-
 	// open the file
-
 	ifstream readFile;
 	readFile.open("library.txt");
 
@@ -51,14 +58,12 @@ int main()
 	Welcome to Hangman Menu function
 ****************************************************************************************/
 
-
 	int choice;
-	bool play; // initalize whether to play or not
+	bool play;
 	
 	cout << "Hello and Welcome to Giselle's Single Player Hangman!\n";
 	
-	// call the starting menu
-
+	// Call the starting menu
 	choice = menu ("Press 1 to Start\nPress 2 to Quit\n", 1, 2);
 				
 	if (1 == choice)
@@ -67,48 +72,36 @@ int main()
 	}
 	else if (2 == choice)
 	{
-		//play = false;
 		return 0;
 	}
 
-
-
-// read the library file
-
-
+	// cannot read the library file
 	if (!readFile)
 	{
-		cout << "Can't fine the file!\n";
+		cout << "Can't find the file!\n";
 	}
-	// https://stackoverflow.com/questions/3482064/counting-the-number-of-lines-in-a-text-file
 
 
 /****************************************************************************************
-
-
+	Reads how many lines (words or phrases) that are in the library file
+	Resource: 
+	B. Counting lines in a txt file https://stackoverflow.com/questions/3482064/counting-the-number-of-lines-in-a-text-file
 ****************************************************************************************/	
-/*******************************
 
-	This is for reading how many lines are in the file
-
-********************************/	
 	// ignore white space
-
 	readFile.unsetf (ios_base::skipws);
 
 	// count lines
-		
 	unsigned lineCount = count(istream_iterator<char>(readFile), istream_iterator<char>(), '\n');
 
-
-	cout << "File has this many lines:" << lineCount << "\n"; 
-
-	// This is for randoming the number-of-lines-in-a-text-file
-	// http://www.cplusplus.com/reference/cstdlib/rand/
-
-
+	// testing if string from library file is being read correctly
+	//cout << "File has this many lines:" << lineCount << "\n";
+	
 /****************************************************************************************
-	Game functions
+	Game: finding the random #, getting the word or phrase to guess and initializing the
+	display word.
+	Resource: 
+	C. Randomizing http://www.cplusplus.com/reference/cstdlib/rand/
 ****************************************************************************************/	
 	
 	srand (time(NULL));
@@ -117,30 +110,28 @@ int main()
 	
 	while (playGame)
 	{
-
-		int random = rand() % lineCount;
-
-		cout << "Random = " << random << "\n";
-
-		// open file again to get the line
-
+		// Randoming the number-of-lines-in-a-text-file
+		int random = rand() % lineCount; 
 		
-		// read the line
-		
-		int thing = 5;
-		//getline(readFile)
+		// for testing the random # generated
+		//cout << "Random = " << random << "\n";
+
 		string phrase;
 		
+		// read the file again to get the word or phrase that was randomly picked 	
 		ifstream readFileAgain;
 		readFileAgain.open ("library.txt");
 		
-		for (int i = 0; i <= random; i++) // go through the file and pick the line # that was randomly picked above
+		// go through the file and pick the line # that was randomly picked above
+		for (int i = 0; i <= random; i++)
 		{
 			getline (readFileAgain, answerString);
 		}
-		cout << " trying to get the line " << answerString << "\nNumber of characters in string: " << answerString.length() << endl;
 		
-		// Create the display word with a bunch of underscores
+		// for testing the string for getting length correctly
+		//cout << " trying to get the line " << answerString << "\nNumber of characters in string: " << answerString.length() << endl;
+		
+		// Create the display word with a bunch of underscores or empty spaces for space between words
 		for (int i = 0; i < (answerString.length() - 1); ++i)
 		{
 			if (answerString.at(i) == ' ')
@@ -153,25 +144,27 @@ int main()
 			}
 		}
 		
-		// make secret phase all uppercase
-		// https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
+		
+/****************************************************************************************
+	Displays the game couts to user, gueses left, what they've guessed and input validation
+	Resources: 
+	D. Convert strings to upper or lower case https://stackoverflow.com/questions/735204/convert-a-string-in-c-to-upper-case
+	E. Input validation only letters through the alphabet https://stackoverflow.com/questions/7616867/how-to-test-a-string-for-letters-only
+	F. Check to see if this letter has already been guessed or not http://www.cplusplus.com/reference/string/string/find/
+****************************************************************************************/
+
+		// make secret phrase all uppercase
 		transform(answerString.begin(), answerString.end(), answerString.begin(), ::toupper);
 		
-	// check # of guesses left
+		// check # of guesses left
 		while (guessesLeft > 0)
 		{
-					
-			cout << "Current word: " << displayWord << "\nGuessed letters " << guesses << "\nNumber of guesses left: " << guessesLeft << endl;
-
-			// 1.a if guesses left 0, cout you lost!
+			// display the current word with __ for unguessed letters
+			cout << "Current word: " << displayWord;
 			
-			//else keep going call the function to get the guess some_character??
+			cout << "\nLetters you've guessed: " << guesses << "\nYou have " << guessesLeft << " guesses left!" << endl;
 
-			// cin guess a character
-			
-			// input validation only 1 string length in size
-			// input validation only letters through the alphabet
-			// use function to change letters to uppercase
+			// declare guess - the letter player will guess
 			string guess;
 			
 			cout << "Guess a letter!\n";
@@ -185,35 +178,31 @@ int main()
 				cout << "Too many letters. Only use 1 letter\n";
 				continue; // continue means go back to top of loop
 			}
+			
 			//convert guess to be upper case
 			transform (guess.begin(), guess.end(),guess.begin(), ::toupper);
 			
 			// input validation only letters through the alphabet
-			// https://stackoverflow.com/questions/7616867/how-to-test-a-string-for-letters-only
 			if (guess.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos)
 			{
-				cout << "Please enter only 1 letter and no punctuation\n";
+				cout << "Please enter only 1 letter and no punctuation.\n";
 				continue;
 			}
 			
 			// Check to see if this letter has already been guessed or not
-			// http://www.cplusplus.com/reference/string/string/find/
 			size_t found = guesses.find(guess);
 				
 			// checking to see if it is in the string
 			if(found != string::npos) // if this true then it is in the string
 			{
 				cout << "You already guessed that.\n";
-				// loop back to ask again ??
 				continue;
 			}
 			
-			// Add this guess to the list of guessed characters
-			guesses = guesses + guess; // concatenate string together
+			// Add this guess to the list of guessed characters and concatenate string together
+			guesses = guesses + guess; 
 			
 			// check if the guess string is in the answer string
-			
-			//found = answerString.find(guess); // needs to find all of them in the answer String
 			bool letterIsInAnswer = false;
 			for (int i = 0; i < answerString.length(); ++i)
 			{
@@ -222,8 +211,8 @@ int main()
 					//add it displayWord
 					displayWord.at(i) = guess.at(0);
 					
-					// cout << "That letter is in the string\n";
-					
+					// for testing
+					// cout << "That letter is in the string\n";					
 					letterIsInAnswer = true;
 				}
 			}
@@ -238,26 +227,12 @@ int main()
 			found = displayWord.find("_");
 			if (found == string::npos)
 			{
-				cout << displayWord << endl;
+				cout << "You correctly guessed: " << displayWord << ". Good job! :)" << endl;
 				break;
 			}
 			
-			
-			// cout << "Current Guesses string: " << guesses << "\n";
-			
-		
-			// cin << 
-
-		// check if character is already guessed
-			// if character not already guessed
-				// add it to guesses
-				// check if in the word(s)
-				// if not in word(s) -> --guesses left
-					// in in word(s) -> update the vector and display ??
-
-			//
-			
 		}
+
 		if (0 == guessesLeft)
 		{
 			cout << "Sorry you lost!\n";
@@ -265,9 +240,11 @@ int main()
 		else
 		{
 			cout << "You win!\n";
-			// add variable for wins ?
 		}
-
+		
+/****************************************************************************************
+	End of a game: Reset variables, ask user to play again or quit
+****************************************************************************************/
 
 		// reset guesses to having no guesses in it
 		guesses = "";
@@ -277,7 +254,8 @@ int main()
 		
 		string playAgain;
 		bool questionLoop = true;
-		
+
+		// Menu loop to play or quit after a game instance
 		while (questionLoop == true)
 		{
 			cout << "Play again? Y or N\n";
@@ -285,6 +263,7 @@ int main()
 			
 			if (playAgain.at(0) == 'Y' || playAgain.at(0) == 'y')
 			{
+				cout << "Playing again!\n";
 				playGame = true;
 				questionLoop = false;
 			}
@@ -297,7 +276,6 @@ int main()
 			{
 				cout << "Does not compute - Try again!\n";
 				questionLoop = true;
-				//continue;
 			}
 		}
 	}
@@ -307,9 +285,8 @@ int main()
 	// End of MAIN
 
 /****************************************************************************************
-	Menu function with input validation
+	Menu function 1. with input validation
 ****************************************************************************************/
-
 	
 	int menu (string menuQuestion, int MIN, int MAX)
 	{
@@ -320,7 +297,7 @@ int main()
 			cout << menuQuestion;
 			cin >> menuChoice;
 			
-			// check to see if they type in not a number
+			// check to see if they type is not a number
 			if (menuChoice.find_first_not_of("1234567890") != string::npos)
 			{
 				cout << "Did not compute - Try again!\n";
