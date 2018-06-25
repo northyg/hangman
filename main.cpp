@@ -235,11 +235,11 @@ int main()
 
 		if (0 == guessesLeft)
 		{
-			cout << "Sorry you lost!\n";
+			cout << "Sorry you lost!\nThe correct answer was: " << answerString << "\n";
 		}
 		else
 		{
-			cout << "You win!\n";
+			cout << "You win with the correct answer of: " << answerString << "\n";
 		}
 		
 /****************************************************************************************
