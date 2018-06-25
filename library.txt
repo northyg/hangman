@@ -1,8 +1,8 @@
-hello pretty 1
-dog 2
-cat 3
-bird 4
-read 5
-pretty 6
-parrot 7 
-black dog 8
+hello pretty
+dog
+cat
+bird
+read
+pretty
+parrot
+black dog
