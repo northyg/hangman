@@ -5,7 +5,7 @@ Hackathon June 2018
 	Oregon State Beaverhacks Summer 2018
 	Single Player Hangman Version 1.0
 
-	My single player hangman randomly pickes a word or phrase from a game uses a txt library
+	My single player hangman randomly picks a word or phrase from a game uses a txt library
 	that the player needs to guess in order to win!
 
 	Words can be added to library.txt so long as white spaces are not left on accident.
