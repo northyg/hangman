@@ -308,7 +308,7 @@ int main()
 				int convertMenuChoice = stoi(menuChoice); // convert input to an Int
 				if (convertMenuChoice < MIN || convertMenuChoice > MAX)
 				{
-					cout << "Invaliad number - Try again!\n"; // makes sure the int is within the range
+					cout << "Invalid number - Try again!\n"; // makes sure the int is within the range
 					continue;
 				}
 				return convertMenuChoice;
